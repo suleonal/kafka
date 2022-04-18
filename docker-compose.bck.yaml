@@ -1,0 +1,18 @@
+version: "2"
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    network_mode: host
+    restart: unless-stopped
+
+  kafka:
+    image: wurstmeister/kafka
+    network_mode: host
+    depends_on:
+      - zookeeper
+    environment:
+      DOCKER_API_VERSION: 1.22
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERSITED_LISTENERS: PLAINTEXT://10.0.2.15:9092
+    restart: unless-stopped
